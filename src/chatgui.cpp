@@ -2,12 +2,13 @@
 #include <wx/colour.h>
 #include <wx/image.h>
 #include <string>
+#include <memory> 
 #include "chatbot.h"
 #include "chatlogic.h"
 #include "chatgui.h"
 
 // size of chatbot window
-const int width = 414;
+const int width = 600;
 const int height = 736;
 
 // wxWidgets APP
@@ -19,7 +20,7 @@ std::string imgBasePath = dataPath + "images/";
 bool ChatBotApp::OnInit()
 {
     // create window with name and show it
-    ChatBotFrame *chatBotFrame = new ChatBotFrame(wxT("Udacity ChatBot"));
+    ChatBotFrame *chatBotFrame = new ChatBotFrame(wxT("Piyopiyo Chat"));
     chatBotFrame->Show(true);
 
     return true;
@@ -42,12 +43,13 @@ ChatBotFrame::ChatBotFrame(const wxString &title) : wxFrame(NULL, wxID_ANY, titl
     // create vertical sizer for panel alignment and add panels
     wxBoxSizer *vertBoxSizer = new wxBoxSizer(wxVERTICAL);
     vertBoxSizer->AddSpacer(90);
-    vertBoxSizer->Add(_panelDialog, 6, wxEXPAND | wxALL, 0);
-    vertBoxSizer->Add(_userTextCtrl, 1, wxEXPAND | wxALL, 5);
+    vertBoxSizer->Add(_panelDialog, 30, wxEXPAND | wxALL, 0);
+    vertBoxSizer->Add(_userTextCtrl, 1, wxEXPAND | wxALL, 2);
     ctrlPanel->SetSizer(vertBoxSizer);
 
     // position window in screen center
     this->Centre();
+    
 }
 
 void ChatBotFrame::OnEnter(wxCommandEvent &WXUNUSED(event))
@@ -88,7 +90,7 @@ void ChatBotFrameImagePanel::paintNow()
 void ChatBotFrameImagePanel::render(wxDC &dc)
 {
     // load backgroud image from file
-    wxString imgFile = imgBasePath + "sf_bridge.jpg";
+    wxString imgFile = imgBasePath + "cockatiel-4084017_640.jpg";
     wxImage image;
     image.LoadFile(imgFile);
 
@@ -118,7 +120,8 @@ ChatBotPanelDialog::ChatBotPanelDialog(wxWindow *parent, wxWindowID id)
     ////
 
     // create chat logic instance
-    _chatLogic = new ChatLogic(); 
+    //_chatLogic = new ChatLogic(); 
+    _chatLogic = std::make_unique<ChatLogic>();
 
     // pass pointer to chatbot dialog so answers can be displayed in GUI
     _chatLogic->SetPanelDialogHandle(this);
@@ -135,7 +138,7 @@ ChatBotPanelDialog::~ChatBotPanelDialog()
     //// STUDENT CODE
     ////
 
-    delete _chatLogic;
+    //delete _chatLogic;
 
     ////
     //// EOF STUDENT CODE
@@ -182,7 +185,7 @@ void ChatBotPanelDialog::paintNow()
 void ChatBotPanelDialog::render(wxDC &dc)
 {
     wxImage image;
-    image.LoadFile(imgBasePath + "sf_bridge_inner.jpg");
+    image.LoadFile(imgBasePath + "cockatiel-4084017_640.jpg");
 
     wxSize sz = this->GetSize();
     wxImage imgSmall = image.Rescale(sz.GetWidth(), sz.GetHeight(), wxIMAGE_QUALITY_HIGH);
@@ -199,7 +202,7 @@ ChatBotPanelDialogItem::ChatBotPanelDialogItem(wxPanel *parent, wxString text, b
 
     // create image and text
     _chatBotImg = new wxStaticBitmap(this, wxID_ANY, (isFromUser ? wxBitmap(imgBasePath + "user.png", wxBITMAP_TYPE_PNG) : *bitmap), wxPoint(-1, -1), wxSize(-1, -1));
-    _chatBotTxt = new wxStaticText(this, wxID_ANY, text, wxPoint(-1, -1), wxSize(150, -1), wxALIGN_CENTRE | wxBORDER_NONE);
+    _chatBotTxt = new wxStaticText(this, wxID_ANY, text, wxPoint(-1, -1), wxSize(300, -1), wxALIGN_CENTRE | wxBORDER_NONE);
     _chatBotTxt->SetForegroundColour(isFromUser == true ? wxColor(*wxBLACK) : wxColor(*wxWHITE));
 
     // create sizer and add elements
@@ -209,8 +212,8 @@ ChatBotPanelDialogItem::ChatBotPanelDialogItem(wxPanel *parent, wxString text, b
     this->SetSizer(horzBoxSizer);
 
     // wrap text after 150 pixels
-    _chatBotTxt->Wrap(150);
+    _chatBotTxt->Wrap(300);
 
     // set background color
-    this->SetBackgroundColour((isFromUser == true ? wxT("YELLOW") : wxT("BLUE")));
+    this->SetBackgroundColour((isFromUser == true ? wxT("GREEN") : wxT("GREY")));
 }
