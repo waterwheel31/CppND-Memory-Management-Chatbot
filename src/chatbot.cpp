@@ -39,23 +39,91 @@ ChatBot::~ChatBot()
     {
         delete _image;
         _image = NULL;
+        // std::cout << "image != NULL \n"; 
     }
 }
 
 //// STUDENT CODE
 ////
+ChatBot &ChatBot::operator=(const ChatBot &source){ //assignment operator
+
+    std::cout << "ChatBot Assignment Operator" << std::endl;
+
+    if(this == &source) { return *this;}
+    else {
+        _image = source._image;
+        _chatLogic = source._chatLogic;
+        _rootNode = source._rootNode;
+        _currentNode = source._currentNode;
+
+
+
+        return *this;
+    }
+}
+
+ChatBot::ChatBot(const ChatBot &source){  // copy constructor
+
+    std::cout << "ChatBot Copy Constructor" << std::endl;
+
+    _image = source._image;
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode;
+
+}
+
+ChatBot::ChatBot(ChatBot &&source){            // move constructor 
+
+    std::cout << "ChatBot Move Constructor" << std::endl;
+
+    _image = source._image;
+    _chatLogic = source._chatLogic;
+    _rootNode = source._rootNode;
+    _currentNode = source._currentNode; 
+
+    source._image = NULL; 
+    source._chatLogic = nullptr;
+    source._rootNode = nullptr;
+    source._currentNode = nullptr; 
+
+}
+
+ChatBot &ChatBot::operator=(const ChatBot &&source ){   // move assignment operator 
+
+    std::cout << "ChatBot Move Assignment Constructor" << std::endl;
+
+    if (this == &source){
+        return *this; 
+    } 
+    else {
+        _image = source._image;
+        _chatLogic = source._chatLogic;
+        _rootNode = source._rootNode;
+        _currentNode = source._currentNode; 
+
+        return *this;
+    }
+}
 
 ////
 //// EOF STUDENT CODE
 
 void ChatBot::ReceiveMessageFromUser(std::string message)
 {
+    //std::cout << "ChatBot::ReceiveMessageFromUser \n" ;  
+    
     // loop over all edges and keywords and compute Levenshtein distance to query
     typedef std::pair<GraphEdge *, int> EdgeDist;
     std::vector<EdgeDist> levDists; // format is <ptr,levDist>
 
+
+    std::cout << "ChatBot::ReceiveMessageFromUser -> for loop \n" ;  
+
     for (size_t i = 0; i < _currentNode->GetNumberOfChildEdges(); ++i)
     {
+        
+        std::cout << "ChatBot::ReceiveMessageFromUser -> for loop i: "<< i <<"\n" ;  
         GraphEdge *edge = _currentNode->GetChildEdgeAtIndex(i);
         for (auto keyword : edge->GetKeywords())
         {
@@ -63,6 +131,9 @@ void ChatBot::ReceiveMessageFromUser(std::string message)
             levDists.push_back(ed);
         }
     }
+
+    // std::cout << "ChatBot::ReceiveMessageFromUser -> Select Best Edge \n" ;  
+
 
     // select best fitting edge to proceed along
     GraphNode *newNode;
@@ -78,12 +149,17 @@ void ChatBot::ReceiveMessageFromUser(std::string message)
         newNode = _rootNode;
     }
 
+    // std::cout << "ChatBot::ReceiveMessageFromUser -> MoveChatbotToNewNode()  \n" ;  
+
     // tell current node to move chatbot to new node
     _currentNode->MoveChatbotToNewNode(newNode);
+
+    // std::cout << "ChatBot::ReceiveMessageFromUser -end  \n" ;  
 }
 
 void ChatBot::SetCurrentNode(GraphNode *node)
 {
+    std::cout << "Set Current Node \n";
     // update pointer to current node
     _currentNode = node;
 
@@ -93,8 +169,12 @@ void ChatBot::SetCurrentNode(GraphNode *node)
     std::uniform_int_distribution<int> dis(0, answers.size() - 1);
     std::string answer = answers.at(dis(generator));
 
+    std::cout << "SendMessageToUser() \n";
+
     // send selected node answer to user
     _chatLogic->SendMessageToUser(answer);
+
+    std::cout << "Set Current Node -end \n";
 }
 
 int ChatBot::ComputeLevenshteinDistance(std::string s1, std::string s2)
