@@ -39,10 +39,10 @@ public:
     // getter / setter
     int GetID() { return _id; }
     int GetNumberOfChildEdges() { 
-        std::cout << "GetNumberOfChildEdges()\n"; 
-        std::cout << "Node: " <<  _id << "\n"; 
+        //std::cout << "GetNumberOfChildEdges()\n"; 
+        //std::cout << "Node: " <<  _id << "\n"; 
         return _childEdges.size(); 
-        std::cout << "GetNumberOfChildEdges() - end  \n"; 
+        //std::cout << "GetNumberOfChildEdges() - end  \n"; 
         }
     GraphEdge *GetChildEdgeAtIndex(int index);
     std::vector<std::string> GetAnswers() { return _answers; }

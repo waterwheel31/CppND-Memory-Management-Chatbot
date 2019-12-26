@@ -122,12 +122,12 @@ void ChatBot::ReceiveMessageFromUser(std::string message)
     std::vector<EdgeDist> levDists; // format is <ptr,levDist>
 
 
-    std::cout << "ChatBot::ReceiveMessageFromUser -> for loop \n" ;  
+    // std::cout << "ChatBot::ReceiveMessageFromUser -> for loop \n" ;  
 
     for (size_t i = 0; i < _currentNode->GetNumberOfChildEdges(); ++i)
     {
         
-        std::cout << "ChatBot::ReceiveMessageFromUser -> for loop i: "<< i <<"\n" ;  
+        // std::cout << "ChatBot::ReceiveMessageFromUser -> for loop i: "<< i <<"\n" ;  
         GraphEdge *edge = _currentNode->GetChildEdgeAtIndex(i);
         for (auto keyword : edge->GetKeywords())
         {
@@ -163,7 +163,7 @@ void ChatBot::ReceiveMessageFromUser(std::string message)
 
 void ChatBot::SetCurrentNode(GraphNode *node)
 {
-    std::cout << "Set Current Node \n";
+    //std::cout << "Set Current Node \n";
     // update pointer to current node
     _currentNode = node;
 
@@ -173,12 +173,12 @@ void ChatBot::SetCurrentNode(GraphNode *node)
     std::uniform_int_distribution<int> dis(0, answers.size() - 1);
     std::string answer = answers.at(dis(generator));
 
-    std::cout << "SendMessageToUser() \n";
+    //std::cout << "SendMessageToUser() \n";
 
     // send selected node answer to user
     _chatLogic->SendMessageToUser(answer);
 
-    std::cout << "Set Current Node -end \n";
+    //std::cout << "Set Current Node -end \n";
 }
 
 int ChatBot::ComputeLevenshteinDistance(std::string s1, std::string s2)

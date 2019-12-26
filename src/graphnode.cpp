@@ -45,7 +45,7 @@ void GraphNode::AddEdgeToChildNode(std::unique_ptr<GraphEdge> edge)
     //std::cout << "GraphNode::AddEdgeToChildNode number of nodes: "<< _childEdges.size()  << "\n"; 
     
     _childEdges.push_back(std::move(edge));
-    std::cout << "node: "<< _id << ", _childEdges.size():" << _childEdges.size() << "\n"; 
+    // std::cout << "node: "<< _id << ", _childEdges.size():" << _childEdges.size() << "\n"; 
 }
 
 
