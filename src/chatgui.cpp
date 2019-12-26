@@ -161,8 +161,8 @@ void ChatBotPanelDialog::AddDialogItem(wxString text, bool isFromUser)
 {
     //std::cout << "ChatBotPanelDialog::AddDialogItem() \n"; 
     // add a single dialog element to the sizer
-    ChatBotPanelDialogItem *item = new ChatBotPanelDialogItem(this, text, isFromUser);
-    _dialogSizer->Add(item, 0, wxALL | (isFromUser == true ? wxALIGN_LEFT : wxALIGN_RIGHT), 8);
+    ChatBotPanelDialogItem *item = new ChatBotPanelDialogItem(this, text, isFromUser);  
+    _dialogSizer->Add(item, 0, wxALL | (isFromUser == false ? wxALIGN_LEFT : wxALIGN_RIGHT), 8);  //original false
     _dialogSizer->Layout();
 
     //std::cout << "ChatBotPanelDialogItem item created \n"; 
